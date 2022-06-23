@@ -8,9 +8,11 @@ error notOwner();
 
 contract FundMe {
     address immutable i_owner;
+    AggregatorV3Interface public priceFeed;
 
-    constructor() {
+    constructor(address priceFeedAddress) {
         i_owner = msg.sender;
+        priceFeed = AggregatorV3Interface(priceFeedAddress);
     }
 
     using PriceConverter for uint256;
@@ -21,7 +23,7 @@ contract FundMe {
     mapping(address => uint256) public addressToAmountFunded;
 
     function fund() public payable {
-        if (msg.value.getConversionRate() < MIN_USD) {
+        if (msg.value.getConversionRate(priceFeed) < MIN_USD) {
             revert notEnoughEthSent();
         }
 
