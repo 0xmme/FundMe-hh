@@ -14,6 +14,7 @@ export const networkConfig: networkConfigInfo = {
   // Default one is ETH/USD contract on Kovan
   rinkeby: {
     ethUsdPriceFeed: "0x8a753747a1fa494ec906ce90e9f37563a8af630e",
+    blockConfirmations: 6,
   },
   polygon: {
     ethUsdPriceFeed: "0xF9680D99D6C9589e2a93a78A04A279e509205945",

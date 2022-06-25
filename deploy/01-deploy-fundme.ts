@@ -36,18 +36,17 @@ const deployFunc: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
     ethUsdPriceFeedAddress = networkConfig[network.name].ethUsdPriceFeed!;
   }
 
-  const args = [ethUsdPriceFeedAddress];
-
   const fundMe: DeployedContract = await deploy("FundMe", {
     from: deployer,
-    args: args,
+    args: [ethUsdPriceFeedAddress],
     log: true,
+    waitConfirmations: networkConfig[network.name].blockConfirmations || 1,
   });
 
   log("-----------------------------------");
 
   if (!devChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
-    await verify(fundMe.address, args);
+    await verify(fundMe.address, [ethUsdPriceFeedAddress]);
   }
 };
 
