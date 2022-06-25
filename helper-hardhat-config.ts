@@ -1,33 +1,21 @@
-/* eslint-disable spaced-comment */
-//const networkConfig = {
-//  4: {
-//    name: "rinkeby",
-//    ethUsdPriceFeed: "0x8a753747a1fa494ec906ce90e9f37563a8af630e",
-//  },
-//  137: {
-//    name: "polygon",
-//    ethUsdPriceFeed: "0xF9680D99D6C9589e2a93a78A04A279e509205945",
-//  },
-//};
+export interface networkConfigItem {
+  ethUsdPriceFeed?: string;
+  blockConfirmations?: number;
+}
 
-//const devChains = ["hardhat", "localhost"];
-//const DECIMALS = 8;
-//const INITIAL_ANSWER = 200000000000;
+export interface networkConfigInfo {
+  [key: string]: networkConfigItem;
+}
 
-//module.exports = {
-//  networkConfig,
-//  devChains,
-//  DECIMALS,
-//  INITIAL_ANSWER,
-//};
-
-export const networkConfig = {
-  4: {
-    name: "rinkeby",
+export const networkConfig: networkConfigInfo = {
+  localhost: {},
+  hardhat: {},
+  // Price Feed Address, values can be obtained at https://docs.chain.link/docs/reference-contracts
+  // Default one is ETH/USD contract on Kovan
+  rinkeby: {
     ethUsdPriceFeed: "0x8a753747a1fa494ec906ce90e9f37563a8af630e",
   },
-  137: {
-    name: "polygon",
+  polygon: {
     ethUsdPriceFeed: "0xF9680D99D6C9589e2a93a78A04A279e509205945",
   },
 };
@@ -35,10 +23,3 @@ export const networkConfig = {
 export const devChains = ["hardhat", "localhost"];
 export const DECIMALS = 8;
 export const INITIAL_ANSWER = 200000000000;
-
-//module.exports = {
-//  networkConfig,
-//  devChains,
-//  DECIMALS,
-//  INITIAL_ANSWER,
-//};

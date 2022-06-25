@@ -1,8 +1,11 @@
-// import statements outstanding
-
-import { network } from "hardhat";
+/* eslint-disable node/no-missing-import */
+/* eslint-disable node/no-unpublished-import */
+/* eslint-disable no-unused-vars */
+import { HardhatRuntimeEnvironment } from "hardhat/types";
+import { Address, DeployFunction } from "hardhat-deploy/types";
+import { deployments, getNamedAccounts, network } from "hardhat";
 // eslint-disable-next-line node/no-missing-import
-import { networkConfig } from "../helper-hardhat-config";
+import { networkConfig, devChains } from "../helper-hardhat-config";
 
 // this is the longer version of the code down there
 // function deployFunc() {
@@ -13,16 +16,31 @@ import { networkConfig } from "../helper-hardhat-config";
 // module.exports.default = async (hre) => {
 // const {getNamedAccounts, deployments} = hre;
 
-module.exports = async ({ getNamedAccounts, deployments }) => {
-  const { deploy, log } = deployments;
-  const deployer = getNamedAccounts();
-  const chainId = network.config.chainId;
+const deployFunc: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
+  // @ts-ignore
+  const { getNamedAccounts, deployments } = hre;
+  const { deploy, log, get } = deployments;
+  const { deployer } = await getNamedAccounts();
 
-  const priceFeedAddress = networkConfig[chainId].ethUsdPriceFeed;
+  // const chainId: number = network.config.chainId!;
+  let ethUsdPriceFeedAddress: Address;
 
-  const fundMe = await deploy("FundMe", {
+  if (devChains.includes(network.name)) {
+    const ethUsdAggregator = await get("MockV3Aggregator");
+    ethUsdPriceFeedAddress = ethUsdAggregator.address;
+  } else {
+    ethUsdPriceFeedAddress = networkConfig[network.name].ethUsdPriceFeed!;
+  }
+
+  await deploy("FundMe", {
     from: deployer,
-    args: [],
+    args: [ethUsdPriceFeedAddress],
     log: true,
   });
+
+  log("-----------------------------------");
 };
+
+export default deployFunc;
+
+deployFunc.tags = ["all", "fundMe"];
