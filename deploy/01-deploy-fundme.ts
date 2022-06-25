@@ -2,10 +2,14 @@
 /* eslint-disable node/no-unpublished-import */
 /* eslint-disable no-unused-vars */
 import { HardhatRuntimeEnvironment } from "hardhat/types";
-import { Address, DeployFunction } from "hardhat-deploy/types";
+import {
+  Address,
+  DeployFunction,
+  DeployedContract,
+} from "hardhat-deploy/types";
 import { deployments, getNamedAccounts, network } from "hardhat";
-// eslint-disable-next-line node/no-missing-import
 import { networkConfig, devChains } from "../helper-hardhat-config";
+import verify from "../utils/verify";
 
 // this is the longer version of the code down there
 // function deployFunc() {
@@ -32,13 +36,19 @@ const deployFunc: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
     ethUsdPriceFeedAddress = networkConfig[network.name].ethUsdPriceFeed!;
   }
 
-  await deploy("FundMe", {
+  const args = [ethUsdPriceFeedAddress];
+
+  const fundMe: DeployedContract = await deploy("FundMe", {
     from: deployer,
-    args: [ethUsdPriceFeedAddress],
+    args: args,
     log: true,
   });
 
   log("-----------------------------------");
+
+  if (!devChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
+    await verify(fundMe.address, args);
+  }
 };
 
 export default deployFunc;
