@@ -6,22 +6,44 @@ import "./PriceConverter.sol";
 error notEnoughEthSent();
 error notOwner();
 
+/** @title A contract for crowdfunding
+ * @author mme
+ * @notice this contract is for demo purpose only
+ * @dev this contract implements pricefeeds as library
+ */
 contract FundMe {
+    using PriceConverter for uint256;
+
     address immutable i_owner;
     AggregatorV3Interface public priceFeed;
+    uint256 public constant MIN_USD = 50 * 1e18;
+    address[] public funders;
+    mapping(address => uint256) public addressToAmountFunded;
+
+    modifier onlyOwner() {
+        if (msg.sender != i_owner) {
+            revert notOwner();
+        }
+        _;
+    }
 
     constructor(address priceFeedAddress) {
         i_owner = msg.sender;
         priceFeed = AggregatorV3Interface(priceFeedAddress);
     }
 
-    using PriceConverter for uint256;
+    receive() external payable {
+        fund();
+    }
 
-    uint256 public constant MIN_USD = 50 * 1e18;
+    fallback() external payable {
+        fund();
+    }
 
-    address[] public funders;
-    mapping(address => uint256) public addressToAmountFunded;
-
+    /**
+     * @notice this function is to add funds to the contract, there is a min amt of 50USD
+     * @dev there will be an error for too less eth sent, the function uses pricefeeds
+     */
     function fund() public payable {
         if (msg.value.getConversionRate(priceFeed) < MIN_USD) {
             revert notEnoughEthSent();
@@ -45,20 +67,5 @@ contract FundMe {
             value: address(this).balance
         }("");
         require(callSuccess, "Call failed");
-    }
-
-    receive() external payable {
-        fund();
-    }
-
-    fallback() external payable {
-        fund();
-    }
-
-    modifier onlyOwner() {
-        if (msg.sender != i_owner) {
-            revert notOwner();
-        }
-        _;
     }
 }
