@@ -1,4 +1,7 @@
 {
+  "name": "hardhat_fundme_project",
+  "author": "mme",
+  "version": "1.0.0",
   "devDependencies": {
     "@chainlink/contracts": "^0.4.1",
     "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers",
@@ -33,5 +36,10 @@
     "ts-node": "^10.1.0",
     "typechain": "^5.1.2",
     "typescript": "^4.5.2"
+  },
+  "scripts": {
+    "lint": "yarn solhint contracts/*.sol",
+    "lint:fix": "yarn solhint contracts/*.sol --fix",
+    "format": "yarn prettier --write ."
   }
 }
