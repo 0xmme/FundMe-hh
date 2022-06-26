@@ -20,7 +20,7 @@ describe("FundMe", () => {
 
   describe("constructor", () => {
     it("sets the aggregator address correctly for local network", async () => {
-      const response: Address = await fundMe.priceFeed();
+      const response: Address = await fundMe.getPriceFeed();
       assert.equal(response, mockV3Aggregator.address);
     });
   });
@@ -32,13 +32,15 @@ describe("FundMe", () => {
 
     it("should update the mapping after correct fund call with min amount sent", async () => {
       await fundMe.fund({ value: sendValue });
-      const response: BigNumber = await fundMe.addressToAmountFunded(deployer);
+      const response: BigNumber = await fundMe.getAmountToFunderAddress(
+        deployer
+      );
       assert.equal(response.toString(), sendValue.toString());
     });
     it("should update the array after successfull function call of fund", async () => {
       await fundMe.fund({ value: sendValue });
-      const fundersLen = await fundMe.funders.length;
-      const response: Address = await fundMe.funders(fundersLen);
+      const fundersLen = await fundMe.getFunder.length;
+      const response: Address = await fundMe.getFunder(fundersLen);
       assert.equal(deployer, response);
     });
   });
@@ -103,12 +105,14 @@ describe("FundMe", () => {
       );
 
       // make sure funders array is properly reset;
-      await expect(fundMe.funders(0)).to.be.reverted;
+      await expect(fundMe.getFunder(0)).to.be.reverted;
 
       // make sure in the mappings are no values left
       for (let i = 1; i < 6; i++) {
         assert.equal(
-          (await fundMe.addressToAmountFunded(accounts[0].address)).toString(),
+          (
+            await fundMe.getAmountToFunderAddress(accounts[0].address)
+          ).toString(),
           "0"
         );
       }
@@ -120,6 +124,88 @@ describe("FundMe", () => {
       await expect(fundMe.connect(testSigner).withdraw()).to.be.revertedWith(
         "notOwner()"
       );
+    });
+  });
+
+  describe("cheaperwithdraw", () => {
+    beforeEach(async () => {
+      await fundMe.fund({ value: sendValue });
+    });
+    it("should withdraw ETH from a single founder", async () => {
+      const startFundMeBal: BigNumber = await fundMe.provider.getBalance(
+        fundMe.address
+      );
+      const startDeployerBal: BigNumber = await fundMe.provider.getBalance(
+        deployer
+      );
+      const txResponse = await fundMe.cheaperWithdraw();
+      const txReceipt = await txResponse.wait(1);
+      const { gasUsed, effectiveGasPrice } = txReceipt;
+      const gasConsumptionInEth = gasUsed.mul(effectiveGasPrice);
+      const endFundMeBal: BigNumber = await fundMe.provider.getBalance(
+        fundMe.address
+      );
+      const endDeployerBal: BigNumber = await fundMe.provider.getBalance(
+        deployer
+      );
+
+      assert.equal(endFundMeBal.toString(), "0");
+      assert.equal(
+        startFundMeBal.add(startDeployerBal).toString(),
+        endDeployerBal.add(gasConsumptionInEth).toString()
+      );
+    });
+
+    it("should be withdrawable by the deployer after multiple funders added eth", async () => {
+      const accounts: SignerWithAddress[] = await ethers.getSigners();
+      for (let i = 1; i < 6; i++) {
+        await fundMe.connect(accounts[i]).fund({ value: sendValue });
+      }
+
+      const startFundMeBal: BigNumber = await fundMe.provider.getBalance(
+        fundMe.address
+      );
+      const startDeployerBal: BigNumber = await fundMe.provider.getBalance(
+        deployer
+      );
+
+      const txResponse = await fundMe.cheaperWithdraw();
+      const txReceipt = await txResponse.wait(1);
+      const { gasUsed, effectiveGasPrice } = txReceipt;
+      const gasConsumptionInEth = gasUsed.mul(effectiveGasPrice);
+      const endFundMeBal: BigNumber = await fundMe.provider.getBalance(
+        fundMe.address
+      );
+      const endDeployerBal: BigNumber = await fundMe.provider.getBalance(
+        deployer
+      );
+
+      assert.equal(endFundMeBal.toString(), "0");
+      assert.equal(
+        startFundMeBal.add(startDeployerBal).toString(),
+        endDeployerBal.add(gasConsumptionInEth).toString()
+      );
+
+      // make sure funders array is properly reset;
+      await expect(fundMe.getFunder(0)).to.be.reverted;
+
+      // make sure in the mappings are no values left
+      for (let i = 1; i < 6; i++) {
+        assert.equal(
+          (
+            await fundMe.getAmountToFunderAddress(accounts[0].address)
+          ).toString(),
+          "0"
+        );
+      }
+    });
+
+    it("should revert if notOwner calls withdraw", async () => {
+      const testUser: Address = (await getNamedAccounts()).testUser;
+      const testSigner = await ethers.getSigner(testUser);
+      await expect(
+        fundMe.connect(testSigner).cheaperWithdraw()
+      ).to.be.revertedWith("notOwner()");
     });
   });
 });
