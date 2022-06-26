@@ -32,13 +32,14 @@ contract FundMe {
         priceFeed = AggregatorV3Interface(priceFeedAddress);
     }
 
-    receive() external payable {
-        fund();
-    }
+    // currently disabled, as I don't know yet how to unit test the receive and fallback methods
+    //receive() external payable {
+    //    fund();
+    //}
 
-    fallback() external payable {
-        fund();
-    }
+    //fallback() external payable {
+    //    fund();
+    //}
 
     /**
      * @notice this function is to add funds to the contract, there is a min amt of 50USD
