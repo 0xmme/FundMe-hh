@@ -8,14 +8,14 @@ async function main() {
   console.log(
     "Found existing contract of deployer under address: ",
     fundMe.address,
-    " ... now funding contract...."
+    " ... now withdrawing funds...."
   );
 
-  const txResponse = await fundMe.fund({
-    value: ethers.utils.parseEther("0.1"),
+  const txResponse = await fundMe.withdraw({
+    gasLimit: 100000,
   });
   await txResponse.wait(1);
-  console.log("Funded with 0.1 ETH!");
+  console.log("withdrawed!");
 }
 main()
   .then(() => {

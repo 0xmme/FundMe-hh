@@ -12,11 +12,12 @@ devChains.includes(network.name)
   : describe("FundMe", () => {
       let deployer: Address;
       let fundMe: FundMe;
-      const sendValue: BigNumber = ethers.utils.parseEther("0.001");
+      const sendValue: BigNumber = ethers.utils.parseEther("0.1");
       beforeEach(async () => {
         deployer = (await getNamedAccounts()).deployer;
         fundMe = await ethers.getContract("FundMe", deployer);
       });
+
       it("allows people to fund the contract", async () => {
         await fundMe.fund({ value: sendValue });
         await fundMe.withdraw({ gasLimit: 100000 });
