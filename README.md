@@ -28,15 +28,11 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/mme022/FundMe-hh">
-  </a>
-
 <h3 align="center">FundMe-hh</h3>
 
   <p align="center">
-    project_description
+    Hardhat solidity project for a smart contract that can be funded.
     <br />
-    <a href="https://github.com/mme022/FundMe-hh"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://github.com/mme022/FundMe-hh">View Demo</a>
