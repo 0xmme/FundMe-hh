@@ -35,8 +35,8 @@
     <br />
     <br />
     <br />
-    <a href="https://github.com/mme022/FundMe-hh">View Demo</a>
-    ·
+    <!--<a href="https://github.com/mme022/FundMe-hh">View Demo</a>
+    ·-->
     <a href="https://github.com/mme022/FundMe-hh/issues">Report Bug</a>
     ·
     <a href="https://github.com/mme022/FundMe-hh/issues">Request Feature</a>
