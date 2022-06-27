@@ -68,7 +68,7 @@
     <li><a href="#contributing">Contributing</a></li>-->
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <!--<li><a href="#acknowledgments">Acknowledgments</a></li>-->
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
@@ -76,22 +76,16 @@
 
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
+This is one of my first smart contracts developed with hardhat. I did deploy the contract to Rinkeby Ethereum network and have written some unit and staging tests. See /test for this.
+In /deploy you'll find the scripts to deploy the contract to local testnets. I did this project while learning all about web3 and solidity on freeCodeCamp. Big thanks to [Patrick Collins](https://github.com/PatrickAlphaC)!
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Built With
 
-- [Next.js](https://nextjs.org/)
-- [React.js](https://reactjs.org/)
-- [Vue.js](https://vuejs.org/)
-- [Angular](https://angular.io/)
-- [Svelte](https://svelte.dev/)
-- [Laravel](https://laravel.com)
-- [Bootstrap](https://getbootstrap.com)
-- [JQuery](https://jquery.com)
+- [Hardhat](https://hardhat.org/)
+- [TypeScript](https://typescriptlang.org/)
+- [Ethers](https://docs.ethers.io/v5/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -99,8 +93,7 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+You can set this project up urself locally, just follow the steps mentioned below.
 
 ### Prerequisites
 
@@ -113,29 +106,28 @@ This is an example of how to list things you need to use the software and how to
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Clone the repo
    ```sh
    git clone https://github.com/mme022/FundMe-hh.git
    ```
-3. Install NPM packages
+2. Install NPM packages
    ```sh
    npm install
    ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = "ENTER YOUR API";
+   or
+   ```sh
+   yarn add
    ```
+      <p align="right">(<a href="#top">back to top</a>)</p>
+3. Add .env File
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+You can add your dotenv file according to the example in the root folder.
 
 <!-- USAGE EXAMPLES -->
 
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
+This projects usage is the learning of the things to consider when developing and deploying a smart contract with solidity on the Ethereum Blockchain.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -181,7 +173,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/mme022) - meinert@pm.me
+Manuel Meinert - [@twitter_handle](https://twitter.com/mme022) - meinert@pm.me
 
 Project Link: [https://github.com/mme022/FundMe-hh](https://github.com/mme022/FundMe-hh)
 
@@ -189,11 +181,9 @@ Project Link: [https://github.com/mme022/FundMe-hh](https://github.com/mme022/Fu
 
 <!-- ACKNOWLEDGMENTS -->
 
-<!--## Acknowledgments
+## Acknowledgments
 
-- []()
-- []()
-- []()-->
+- [Patrick Collins](https://github.com/PatrickAlphaC)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
