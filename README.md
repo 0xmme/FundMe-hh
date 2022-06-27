@@ -170,7 +170,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 ## Contact
 
-Manuel Meinert - [@twitter_handle](https://twitter.com/mme022) - meinert@pm.me
+Manuel Meinert - [@mme022](https://twitter.com/mme022) - meinert@pm.me
 
 Project Link: [https://github.com/mme022/FundMe-hh](https://github.com/mme022/FundMe-hh)
 
