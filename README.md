@@ -181,6 +181,7 @@ Project Link: [https://github.com/mme022/FundMe-hh](https://github.com/mme022/Fu
 ## Acknowledgments
 
 - [Patrick Collins](https://github.com/PatrickAlphaC)
+- [freeCodeCamp Tutorial](https://github.com/smartcontractkit/full-blockchain-solidity-course-js)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
